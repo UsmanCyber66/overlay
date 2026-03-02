@@ -8,8 +8,9 @@ def create_network(name: str):
     else:
         print("Error creating network:", name, "\n Error:", result.stderr)
 
-def node(name: str, network: str, ip_range: str = "10.0.0.0/24"):
-    result = subprocess.run(["nebula-cert", "sign", "-name", name, "-ip", f"{ip_range}", "-cert", f"{name}.crt", "-key", f"{name}.key", "-ca-cert", f"{network}.crt", "-ca-key", f"{network}.key"], capture_output=True, text=True)
+def node(network: str, name: str = "node1", ip_range: str = "10.0.0.0/24"):
+    
+    result = subprocess.run(["mkdir",f"{name}", "&&","cd ", f"{name}", "&&", "nebula-cert", "sign", "-name", name, "-ip", f"{ip_range}", "-cert", f"{name}.crt", "-key", f"{name}.key", "-ca-cert", f"{network}.crt", "-ca-key", f"{network}.key "], capture_output=True, text=True)
     if result.returncode == 0:
         print("Creating node:", name, "in network:", network)
         with open("overlaynodes.log", "a") as f:
